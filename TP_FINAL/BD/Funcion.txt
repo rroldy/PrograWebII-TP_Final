@@ -1,0 +1,5 @@
+DROP FUNCTION `f_Service_x_km`; 
+
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `f_Service_x_km`(`in_kms` INT(20), `in_id_transporte` INT(20)) RETURNS VARCHAR(50) DETERMINISTIC READS SQL DATA SQL SECURITY DEFINER begin declare v_kms_max int(20); declare v_id_Servicio int(10); declare v_cant_serv int; /*Que service le corresponde*/ select max(km) into v_kms_max from t_servicios s where s.km <= in_kms; select id_servicio into v_id_Servicio from t_servicios where km = v_kms_max; /*Verificar si lo tiene hecho*/ select count(id_servreal) into v_cant_Serv from t_servrealizados where id_transporte = in_id_transporte and id_servicio = v_id_Servicio; RETURN v_cant_Serv; end
+
